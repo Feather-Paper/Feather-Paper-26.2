@@ -1,0 +1,103 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Martijn Muijsers <martijnmuijsers@live.nl>
+Date: Wed, 30 Nov 2022 13:00:40 +0100
+Subject: [PATCH] 5-second TPS average
+
+License: MIT (https://opensource.org/licenses/MIT)
+Gale - https://galemc.org
+
+This patch is based on the following patch:
+"Add 5 second tps average in /tps"
+By: William Blake Galbreath <blake.galbreath@gmail.com>
+As part of: Purpur (https://github.com/PurpurMC/Purpur)
+Licensed under: MIT (https://opensource.org/licenses/MIT)
+
+* Purpur copyright *
+
+MIT License
+
+Copyright (c) 2019-2022 PurpurMC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index dded639b4bb81d1da1a4563ba60c52635a380c96..bd8ac41d50e0195b270eaa825539b51a292b2f0d 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -2441,7 +2441,29 @@ public final class Bukkit {
+         return server.getTPS();
+     }
+ 
++    // Gale start - Purpur - 5-second TPS average
++    /**
++     * Gets the current server TPS
++     * @return current server TPS (5s, 1m, 5m, 15m in Gale-Server)
++     */
++    public static double @NotNull [] getTPSIncluding5SecondAverage() {
++        return server.getTPSIncluding5SecondAverage();
++    }
++    // Gale end - Purpur - 5-second TPS average
++
+     // Gale start - specific interval TPS API
++
++    // Gale start - Purpur - 5-second TPS average
++    /**
++     * Gets the average server TPS over the last 5 seconds
++     *
++     * @return the average server TPS over the last 5 seconds
++     */
++    public static double get5SecondTPSAverage() {
++        return server.get5SecondTPSAverage();
++    }
++    // Gale end - Purpur - 5-second TPS average
++
+     /**
+      * Gets the average server TPS over the last 1 minute
+      *
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index e2fa4d5051f3d32db88f0b135d95941b6b539372..6dee7f2c6dff1f862da2a032c1876c2bb84aa8c7 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -2189,7 +2189,26 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      */
+     public double @NotNull [] getTPS();
+ 
++    // Gale start - Purpur - 5-second TPS average
++    /**
++     * Gets the current server TPS
++     *
++     * @return current server TPS (5s, 1m, 5m, 15m in Gale-Server)
++     */
++    double @NotNull [] getTPSIncluding5SecondAverage();
++    // Gale end - Purpur - 5-second TPS average
++
+     // Gale start - specific interval TPS API
++
++    // Gale start - Purpur - 5-second TPS average
++    /**
++     * Gets the average server TPS over the last 5 seconds
++     *
++     * @return the average server TPS over the last 5 seconds
++     */
++    double get5SecondTPSAverage();
++    // Gale end - Purpur - 5-second TPS average
++
+     /**
+      * Gets the average server TPS over the last 1 minute
+      *
